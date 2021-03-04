@@ -120,7 +120,7 @@ Explanation:
 Map is implemented using nested list(2D Array)
 There are 4 tiles-Floor,Room,Enemy,Start
 Start is where u are present on the map inititially (4,3)==(row,colomn)
-Enemy tiltes are where the enimies are present
+Enemy tiles are where the enemies are present
 Room tiles are where Rooms are present
 Enemy-
 when u come across an enemy== Fight/do not fight
