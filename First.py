@@ -10,7 +10,9 @@ import random
 """Start=(4,3)
     (x,y)
     (row,column)"""
-
+global INPUT
+global flagger
+flagger=0
 from tkinter import * 
 root = Tk()
 root.geometry("600x700")
@@ -19,17 +21,35 @@ global T,I
 def Take_input():
     global INPUT
     INPUT = I.get("1.0", "end-1c")
+    return INPUT
     #T.insert(END,INPUT)
+def Update():
+    global flagger
+    flagger=1
 lu=Label(text="Output")
 T = Text(root, height = 30, width = 60)
 ld=Label(text="Input")
 I = Text(root, height= 5, width=52)
 bt=Button(root,height=2,width=20,text="Pass",command=lambda:Take_input())
+bt2=Button(root,height=2,width=20,text="Update",command=lambda:Update())
 lu.pack()
 T.pack()
 ld.pack()
 I.pack()
 bt.pack()
+
+def pop():
+    global INPUT
+    popup = Tk()
+    popup.wm_title("Input")
+    label = Label(popup,text="msg", font="NORM_FONT")
+    label.pack()
+    Inp=Text(popup,height=5,width=10)
+    Inp.pack()
+    INPUT= Inp.get("1.0",END)
+    B1 = Button(popup, text="Okay", command = popup.destroy)
+    B1.pack()
+    popup.mainloop()
 map = [["Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall"],
        ["Wall", "Floor", "Floor", "Floor", "Room", "Floor", "Wall"],
        ["Wall", "Floor", "Room", "Floor", "Floor", "Floor", "Wall"],
@@ -46,7 +66,6 @@ player_score = 0
 map_walls = [(0, 0), (0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (1, 0), (2, 0),
              (3, 0), (4, 0), (5, 0), (6, 0), (7, 0), (1, 6), (2, 6), (3, 6), (4, 6),
              (5, 6), (6, 6), (7, 1), (7, 2), (7, 3), (7, 4), (7, 5), (7, 6)]
-
 
 def boss_fight():
     global T,I
@@ -162,7 +181,7 @@ class Playerchoice:
             T.insert(END,(' '+ key+ ':'+ str(value)+ "\n"))
         T.insert(END,'')
         for key, value in self.magician.items():
-            T.insert(END,(' '+ key+ ':'+ (value)+ "\n"))
+            T.insert(END,(' '+ key+ ':'+ str(value)+ "\n"))
         T.insert(END,'')
         for key, value in self.knight.items():
             T.insert(END,(' '+ key+ ':'+ str(value)+ "\n"))
@@ -172,29 +191,32 @@ class Playerchoice:
 
 def accept_choice(lst_of_choices):
     choice = ""
-    global T,I
+    global T,I, INPUT
     while choice not in lst_of_choices:
         T.insert(END,"Select one of the following:")
         for count, option in enumerate(lst_of_choices):
-            T.insert(END,f"{count + 1}:{option}")
+            T.insert(END,(f"{count + 1}:{option}"))
         count = len(lst_of_choices)
         while True:
-            try:
+            #try:
                 T.insert(END,(f"Enter your choice (1-{count}):"))
+               # while (flagger!=0):
+
+                pop()
                 choice = int(INPUT)
                 #Worry
-            except:
-                T.insert(END,"Please enter an acceptable number")
-            else:
-                if not choice in range(1, count + 1):
-                    T.insert(END,"Invalid choice")
-                    choice = ""
-                    continue
-                else:
-                    lst = list(lst_of_choices)
-                    choice = lst[choice - 1]
-                    break
-            finally:
+            #except:
+           #     T.insert(END,"Please enter an acceptable number")
+           # else:
+            #    if not choice in range(1, count + 1):
+           #         T.insert(END,"Invalid choice")
+           #         choice = ""
+          #          continue
+          #      else:
+           #         lst = list(lst_of_choices)
+            #        choice = lst[choice - 1]
+             #       break
+            #finally:
                 T.insert(END,choice)
     return choice
 
@@ -386,5 +408,3 @@ while True:
     else:
         T.insert(END,"Your health has become 0! \nY O U    D I E D")
         exit()
-
-root.mainloop()
